@@ -2,10 +2,12 @@ function escapeRegExp(text) {
   return text.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
-function applyRuleToText(text, rule, mode) {
+function applyRuleToText(text, rule, mode, ignoreCase) {
   if (!rule.from) return text;
   const escaped = escapeRegExp(rule.from);
-  const regex = new RegExp(escaped, mode === "all" ? "g" : "");
+  let flags = mode === "all" ? "g" : "";
+  if (ignoreCase) flags += "i";
+  const regex = new RegExp(escaped, flags);
   return text.replace(regex, rule.to ?? "");
 }
 
@@ -24,19 +26,22 @@ function isReplaceableTarget(target) {
   return true;
 }
 
-function countOccurrences(text, from) {
+function countOccurrences(text, from, ignoreCase) {
   if (!from) return 0;
-  return text.split(from).length - 1;
+  const escaped = escapeRegExp(from);
+  const regex = new RegExp(escaped, ignoreCase ? "gi" : "g");
+  const matches = text.match(regex);
+  return matches ? matches.length : 0;
 }
 
-function replaceInTarget(target, rule, mode) {
+function replaceInTarget(target, rule, mode, ignoreCase) {
   if (!isReplaceableTarget(target)) return 0;
 
   const before = target.value;
-  const occurrenceCount = countOccurrences(before, rule.from);
+  const occurrenceCount = countOccurrences(before, rule.from, ignoreCase);
   if (occurrenceCount === 0) return 0;
 
-  const nextValue = applyRuleToText(before, rule, mode);
+  const nextValue = applyRuleToText(before, rule, mode, ignoreCase);
   if (nextValue === before) return 0;
 
   target.value = nextValue;
@@ -60,12 +65,21 @@ function getReplaceTargets() {
   );
 }
 
-function replaceAll(rule, mode) {
-  const targets = getReplaceTargets();
+let lastFocusedTarget = null;
+
+function getTargetsByScope(targetScope) {
+  if (targetScope === "focused") {
+    return lastFocusedTarget ? [lastFocusedTarget] : [];
+  }
+  return Array.from(getReplaceTargets());
+}
+
+function replaceAll(rule, mode, targetScope, ignoreCase) {
+  const targets = getTargetsByScope(targetScope);
   let changedCount = 0;
   let replacementCount = 0;
   for (const target of targets) {
-    const replaced = replaceInTarget(target, rule, mode);
+    const replaced = replaceInTarget(target, rule, mode, ignoreCase);
     if (replaced <= 0) continue;
     changedCount += 1;
     replacementCount += replaced;
@@ -77,18 +91,51 @@ function replaceAll(rule, mode) {
   };
 }
 
+function previewReplace(rule, targetScope, ignoreCase) {
+  const targets = getTargetsByScope(targetScope);
+  let changedCount = 0;
+  let replacementCount = 0;
+  for (const target of targets) {
+    if (!isReplaceableTarget(target)) continue;
+    const count = countOccurrences(target.value, rule.from, ignoreCase);
+    if (count <= 0) continue;
+    changedCount += 1;
+    replacementCount += count;
+  }
+  return {
+    targetCount: targets.length,
+    changedCount,
+    replacementCount
+  };
+}
+
+document.addEventListener(
+  "focusin",
+  (event) => {
+    if (isReplaceableTarget(event.target)) {
+      lastFocusedTarget = event.target;
+    }
+  },
+  true
+);
+
 if (!globalThis.__RECHROME_LISTENER_REGISTERED__) {
   globalThis.__RECHROME_LISTENER_REGISTERED__ = true;
   chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
-    if (message?.type !== "EXECUTE_REPLACE") return;
+    if (message?.type !== "EXECUTE_REPLACE" && message?.type !== "PREVIEW_REPLACE") return;
     const rule = normalizeRule(message.rule);
     const mode = message.mode === "one" ? "one" : "all";
+    const targetScope = message.targetScope === "focused" ? "focused" : "page";
+    const ignoreCase = Boolean(message.ignoreCase);
     if (!rule) {
       sendResponse({ ok: false, error: "invalid rule" });
       return;
     }
 
-    const result = replaceAll(rule, mode);
+    const result =
+      message.type === "PREVIEW_REPLACE"
+        ? previewReplace(rule, targetScope, ignoreCase)
+        : replaceAll(rule, mode, targetScope, ignoreCase);
     sendResponse({ ok: true, ...result });
   });
 }

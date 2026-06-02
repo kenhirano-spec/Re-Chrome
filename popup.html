@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Re:Chrome</title>
+    <title>Re:Chrome Text</title>
     <style>
       :root {
         --bg: #e7ecf3;
@@ -73,6 +73,65 @@
           inset -3px -3px 6px #ffffff,
           0 0 0 2px rgba(107, 131, 209, 0.22);
       }
+      select {
+        background: #e7edf5;
+        border: none;
+        border-radius: 12px;
+        color: #4e5e7d;
+        width: 100%;
+        box-sizing: border-box;
+        padding: 10px 12px;
+        margin-bottom: 12px;
+        outline: none;
+        box-shadow:
+          inset 4px 4px 9px #c8d1df,
+          inset -4px -4px 9px #fdfefe;
+      }
+      .inline-options {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 10px;
+        align-items: center;
+        margin-bottom: 8px;
+      }
+      .check-label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin: 0;
+        font-size: 12px;
+        color: #68789a;
+        white-space: nowrap;
+      }
+      .check-label input[type="checkbox"] {
+        appearance: none;
+        width: 20px;
+        height: 20px;
+        border-radius: 6px;
+        background: #e7edf5;
+        box-shadow:
+          inset 3px 3px 6px #c8d1df,
+          inset -3px -3px 6px #ffffff;
+        position: relative;
+        cursor: pointer;
+      }
+      .check-label input[type="checkbox"]:checked {
+        background: #dfe7f6;
+        box-shadow:
+          inset 2px 2px 4px #c2ccdb,
+          inset -2px -2px 4px #ffffff;
+      }
+      .check-label input[type="checkbox"]:checked::after {
+        content: "";
+        position: absolute;
+        left: 6px;
+        top: 2px;
+        width: 5px;
+        height: 10px;
+        border: solid #6b83d1;
+        border-width: 0 2px 2px 0;
+        transform: rotate(45deg);
+      }
       button {
         background: #e7edf5;
         border: 0;
@@ -89,9 +148,15 @@
       }
       .button-row {
         display: grid;
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: 0.86fr 1fr 1fr;
         gap: 10px;
         margin-top: 8px;
+      }
+      .preview-button {
+        color: #66779f;
+        font-weight: 620;
+        font-size: 15px;
+        padding: 10px 8px;
       }
       button:hover {
         color: #5b75cb;
@@ -123,11 +188,17 @@
         padding-top: 8px;
         border-top: 1px solid rgba(107, 131, 209, 0.12);
       }
+      .shortcut {
+        display: block;
+        margin-top: 4px;
+        font-size: 10px;
+        color: #9ba6bd;
+      }
     </style>
   </head>
   <body>
     <div class="panel">
-      <div class="title">Re:Chrome</div>
+      <div class="title">Re:Chrome Text</div>
       <div class="sub">Text Replace for Active Tab</div>
 
       <label for="from">置換前</label>
@@ -136,12 +207,35 @@
       <label for="to">置換後</label>
       <input id="to" type="text" placeholder="例: よろしくお願いいたします" />
 
+      <label for="recentRule">最近使ったルール</label>
+      <select id="recentRule">
+        <option value="">選択してください</option>
+      </select>
+
+      <div class="inline-options">
+        <div>
+          <label for="targetScope">対象</label>
+          <select id="targetScope">
+            <option value="page">このページ全体</option>
+            <option value="focused">選択中テキストボックス</option>
+          </select>
+        </div>
+        <label class="check-label" for="ignoreCase">
+          <input id="ignoreCase" type="checkbox" />
+          大文字小文字無視
+        </label>
+      </div>
+
       <div class="button-row">
+        <button id="previewButton" class="preview-button" type="button">件数確認</button>
         <button id="replaceOneButton" type="button">1個ずつ置換</button>
         <button id="replaceAllButton" type="button">全部置換</button>
       </div>
       <div id="status"></div>
-      <div id="versionInfo" class="footer">v-</div>
+      <div id="versionInfo" class="footer">
+        v-
+        <span class="shortcut">ショートカット: Mac Cmd+Shift+R / Win Ctrl+Shift+R</span>
+      </div>
     </div>
 
     <script src="popup.js"></script>
