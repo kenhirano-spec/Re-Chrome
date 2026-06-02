@@ -77,15 +77,18 @@ function replaceAll(rule, mode) {
   };
 }
 
-chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
-  if (message?.type !== "EXECUTE_REPLACE") return;
-  const rule = normalizeRule(message.rule);
-  const mode = message.mode === "one" ? "one" : "all";
-  if (!rule) {
-    sendResponse({ ok: false, error: "invalid rule" });
-    return;
-  }
+if (!globalThis.__RECHROME_LISTENER_REGISTERED__) {
+  globalThis.__RECHROME_LISTENER_REGISTERED__ = true;
+  chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
+    if (message?.type !== "EXECUTE_REPLACE") return;
+    const rule = normalizeRule(message.rule);
+    const mode = message.mode === "one" ? "one" : "all";
+    if (!rule) {
+      sendResponse({ ok: false, error: "invalid rule" });
+      return;
+    }
 
-  const result = replaceAll(rule, mode);
-  sendResponse({ ok: true, ...result });
-});
+    const result = replaceAll(rule, mode);
+    sendResponse({ ok: true, ...result });
+  });
+}

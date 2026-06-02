@@ -12,7 +12,7 @@ function setStatus(message, isError = false) {
 
 function isUnsupportedUrl(url) {
   if (!url) return true;
-  return /^(chrome|edge|about|view-source):/i.test(url);
+  return /^(chrome|edge|about|view-source|chrome-extension|devtools):/i.test(url);
 }
 
 async function sendReplaceMessage(tabId, rule, mode) {
