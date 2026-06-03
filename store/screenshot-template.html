@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Re:Chrome Text - Store Screenshot</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        width: 1280px;
+        height: 800px;
+        background: linear-gradient(145deg, #dbe4f2 0%, #edf2f8 45%, #f7f9fc 100%);
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 48px;
+        color: #4b5974;
+      }
+      .hero {
+        width: 520px;
+      }
+      .badge {
+        display: inline-block;
+        background: #6b83d1;
+        color: #fff;
+        font-size: 13px;
+        font-weight: 700;
+        padding: 6px 12px;
+        border-radius: 999px;
+        margin-bottom: 16px;
+      }
+      h1 {
+        margin: 0 0 12px;
+        font-size: 44px;
+        line-height: 1.15;
+      }
+      p {
+        margin: 0 0 10px;
+        font-size: 18px;
+        line-height: 1.5;
+        color: #66789a;
+      }
+      ul {
+        margin: 18px 0 0;
+        padding-left: 20px;
+        font-size: 17px;
+        line-height: 1.7;
+        color: #5f6f92;
+      }
+      .panel {
+        width: 360px;
+        background: #e9eef5;
+        border-radius: 16px;
+        padding: 16px 14px 12px;
+        box-shadow:
+          10px 10px 20px #c5cfdd,
+          -10px -10px 20px #fbfdff;
+      }
+      .title {
+        font-size: 18px;
+        font-weight: 700;
+        margin-bottom: 2px;
+      }
+      .sub {
+        font-size: 12px;
+        color: #7f8ca6;
+        margin-bottom: 14px;
+      }
+      label {
+        display: block;
+        font-size: 12px;
+        margin-bottom: 6px;
+        color: #68789a;
+      }
+      .field {
+        background: #e7edf5;
+        border-radius: 12px;
+        padding: 10px 12px;
+        margin-bottom: 12px;
+        font-size: 14px;
+        box-shadow:
+          inset 4px 4px 9px #c8d1df,
+          inset -4px -4px 9px #fdfefe;
+      }
+      .row {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 8px;
+        margin-top: 8px;
+      }
+      .btn {
+        border-radius: 12px;
+        padding: 10px 8px;
+        text-align: center;
+        font-size: 13px;
+        font-weight: 700;
+        color: #6b83d1;
+        background: #e7edf5;
+        box-shadow:
+          6px 6px 12px #c9d2e0,
+          -6px -6px 12px #ffffff;
+      }
+      .btn.secondary {
+        color: #66779f;
+        font-weight: 600;
+      }
+      .status {
+        margin-top: 10px;
+        font-size: 11px;
+        color: #7f8ca7;
+      }
+      .footer {
+        margin-top: 10px;
+        padding-top: 8px;
+        border-top: 1px solid rgba(107, 131, 209, 0.12);
+        text-align: center;
+        font-size: 11px;
+        color: #8f9ab2;
+      }
+    </style>
+  </head>
+  <body>
+    <section class="hero">
+      <div class="badge">Chrome Extension</div>
+      <h1>Re:Chrome Text</h1>
+      <p>テキストボックスの文字列を、シンプルに一括置換。</p>
+      <ul>
+        <li>1個ずつ置換 / 全部置換</li>
+        <li>件数確認で実行前チェック</li>
+        <li>直近ルール3件を再利用</li>
+        <li>Alt+Shift+R ショートカット対応</li>
+      </ul>
+    </section>
+
+    <section class="panel" aria-label="popup preview">
+      <div class="title">Re:Chrome Text</div>
+      <div class="sub">Text Replace for Active Tab</div>
+
+      <label>置換前</label>
+      <div class="field">よろしくお願いします</div>
+
+      <label>置換後</label>
+      <div class="field">よろしくお願いいたします</div>
+
+      <label>最近使ったルール</label>
+      <div class="field">よろしくお願いします → よろしくお願いいたします</div>
+
+      <div class="row">
+        <div class="btn secondary">件数確認</div>
+        <div class="btn">1個ずつ置換</div>
+        <div class="btn">全部置換</div>
+      </div>
+
+      <div class="status">件数確認: 5件中 3件（合計7箇所）</div>
+      <div class="footer">v1.1.0 · Alt+Shift+R</div>
+    </section>
+  </body>
+  </html>

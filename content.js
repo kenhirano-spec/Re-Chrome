@@ -65,14 +65,55 @@ function getReplaceTargets() {
   );
 }
 
+const FOCUS_STORAGE_KEY = "rechrome-last-target";
+
 let lastFocusedTarget = null;
+
+function buildTargetSelector(target) {
+  if (target.id) return `#${CSS.escape(target.id)}`;
+  const name = target.getAttribute("name");
+  if (name) {
+    const tag = target.tagName.toLowerCase();
+    return `${tag}[name="${CSS.escape(name)}"]`;
+  }
+  return null;
+}
+
+function restoreLastFocusedTarget() {
+  try {
+    const selector = sessionStorage.getItem(FOCUS_STORAGE_KEY);
+    if (!selector) return;
+    const element = document.querySelector(selector);
+    if (isReplaceableTarget(element)) {
+      lastFocusedTarget = element;
+    }
+  } catch {
+    // Ignore storage access errors on restricted pages.
+  }
+}
+
+function rememberFocusedTarget(target) {
+  lastFocusedTarget = target;
+  const selector = buildTargetSelector(target);
+  if (!selector) return;
+  try {
+    sessionStorage.setItem(FOCUS_STORAGE_KEY, selector);
+  } catch {
+    // Ignore storage access errors on restricted pages.
+  }
+}
 
 function getTargetsByScope(targetScope) {
   if (targetScope === "focused") {
+    if (isReplaceableTarget(document.activeElement)) {
+      return [document.activeElement];
+    }
     return lastFocusedTarget ? [lastFocusedTarget] : [];
   }
   return Array.from(getReplaceTargets());
 }
+
+restoreLastFocusedTarget();
 
 function replaceAll(rule, mode, targetScope, ignoreCase) {
   const targets = getTargetsByScope(targetScope);
@@ -113,7 +154,7 @@ document.addEventListener(
   "focusin",
   (event) => {
     if (isReplaceableTarget(event.target)) {
-      lastFocusedTarget = event.target;
+      rememberFocusedTarget(event.target);
     }
   },
   true

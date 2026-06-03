@@ -1,0 +1,11 @@
+{
+  "extName": {
+    "message": "Re:Chrome Text"
+  },
+  "extDescription": {
+    "message": "テキストボックスの文字列を、シンプルなルールで一括置換します。"
+  },
+  "commandReplaceAll": {
+    "message": "前回設定で全部置換を実行"
+  }
+}

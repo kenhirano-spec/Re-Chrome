@@ -124,13 +124,11 @@ function validateRule() {
 async function withTab(handler) {
   const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
   if (!tab?.id) throw new Error("タブが取得できませんでした。");
-  try {
-    return await handler(tab);
-  } catch (error) {
-    if (!String(error?.message).includes("Receiving end does not exist")) throw error;
-    await ensureContentScript(tab);
-    return handler(tab);
+  if (isUnsupportedUrl(tab.url)) {
+    throw new Error("このページでは実行できません。通常のWebページで実行してください。");
   }
+  await ensureContentScript(tab);
+  return handler(tab);
 }
 
 async function executeReplace(mode, modeLabel) {
@@ -140,6 +138,10 @@ async function executeReplace(mode, modeLabel) {
     const response = await withTab((tab) => sendReplaceMessage(tab.id, rule, mode));
     if (!response?.ok) {
       throw new Error("実行に失敗しました。");
+    }
+    if (targetScopeSelect.value === "focused" && response.targetCount === 0) {
+      setStatus("選択中テキストボックスが見つかりません。入力欄をクリックしてから再実行してください。", true);
+      return;
     }
     await persistState(rule);
     setStatus(

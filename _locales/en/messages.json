@@ -1,0 +1,11 @@
+{
+  "extName": {
+    "message": "Re:Chrome Text"
+  },
+  "extDescription": {
+    "message": "Replace text in input fields with a simple rule."
+  },
+  "commandReplaceAll": {
+    "message": "Run replace-all with last settings"
+  }
+}

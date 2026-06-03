@@ -5,17 +5,17 @@ function isUnsupportedUrl(url) {
   return /^(chrome|edge|about|view-source|chrome-extension|devtools):/i.test(url);
 }
 
-async function sendReplace(tabId, payload) {
-  return chrome.tabs.sendMessage(tabId, {
-    type: "EXECUTE_REPLACE",
-    ...payload
-  });
-}
-
 async function ensureContentScript(tabId) {
   await chrome.scripting.executeScript({
     target: { tabId },
     files: ["content.js"]
+  });
+}
+
+async function sendReplace(tabId, payload) {
+  return chrome.tabs.sendMessage(tabId, {
+    type: "EXECUTE_REPLACE",
+    ...payload
   });
 }
 
@@ -36,11 +36,6 @@ chrome.commands.onCommand.addListener(async (command) => {
     ignoreCase: Boolean(state?.ignoreCase)
   };
 
-  try {
-    await sendReplace(tab.id, payload);
-  } catch (error) {
-    if (!String(error?.message).includes("Receiving end does not exist")) return;
-    await ensureContentScript(tab.id);
-    await sendReplace(tab.id, payload);
-  }
+  await ensureContentScript(tab.id);
+  await sendReplace(tab.id, payload);
 });
