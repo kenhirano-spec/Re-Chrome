@@ -88,11 +88,7 @@ Re:Chrome Text は、Webページ上のテキストボックス（input / textar
 - ユーザーアクティビティ: **なし**
 - ウェブサイトコンテンツ: **置換処理のため一時的にアクセス（外部送信なし）**
 
-プライバシーポリシーURL:
-
-```
-https://kenhirano-spec.github.io/Re-Chrome/privacy.html
-```
+プライバシーポリシーURL: `https://kenhirano-spec.github.io/Re-Chrome/privacy.html`
 
 ---
 

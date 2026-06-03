@@ -3,8 +3,7 @@
 ## 1. 事前準備
 
 - [ ] 開発者アカウント登録（初回 $5）
-- [ ] プライバシーポリシーURLを設定  
-      `https://kenhirano-spec.github.io/Re-Chrome/privacy.html`
+- [ ] プライバシーポリシーURL: `https://kenhirano-spec.github.io/Re-Chrome/privacy.html`
 - [ ] 掲載文を用意（`store/ja.md`, `store/en.md`）
 - [ ] スクリーンショット作成（`store/SCREENSHOTS.md`）
 
@@ -29,7 +28,7 @@ zip -r ReChromeText-v1.1.0.zip . \
    - 言語: 日本語（必要なら英語追加）
 4. プライバシー
    - 単一用途: `store/ja.md` の文言
-   - プライバシーポリシーURL: 公開した `privacy.html` のURL
+   - プライバシーポリシーURL: `https://kenhirano-spec.github.io/Re-Chrome/privacy.html`
    - データ使用: 収集しない
 5. 権限の理由（審査で聞かれた場合）
    - `activeTab`: ユーザー操作時のみ表示中ページへアクセス

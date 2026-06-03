@@ -39,10 +39,10 @@
 zip -r ReChromeText-v1.1.0.zip . -x ".git/*" "*.zip" "*.DS_Store" "store/*"
 ```
 
-## プライバシーポリシー（GitHub Pages）
+## GitHub Pages（プライバシーポリシー）
 
 - URL: `https://kenhirano-spec.github.io/Re-Chrome/privacy.html`
-- 公開手順: `store/PAGES.md`
+- 手順: `store/PAGES.md`
 
 ## Chrome Web Store 提出資料
 

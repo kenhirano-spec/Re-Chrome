@@ -11,11 +11,11 @@ Chrome Web Store の「プライバシーポリシー」欄には **privacy.html
 
 ## 初回設定（リポジトリ管理者）
 
-1. 変更を `main` ブランチへマージ
+1. 変更を `main` ブランチへ push
 2. GitHub リポジトリ → **Settings** → **Pages**
 3. **Build and deployment**
    - Source: **GitHub Actions**
-4. `main` へ push 後、Actions の `Deploy GitHub Pages` が成功することを確認
+4. Actions の `Deploy GitHub Pages` が成功することを確認
 5. 数分後に上記URLへアクセスして表示確認
 
 ---
