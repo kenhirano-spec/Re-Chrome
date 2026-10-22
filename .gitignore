@@ -1,2 +1,12 @@
 .DS_Store
 *.zip
+
+# Local secrets / credentials (baseline)
+.env
+.env.*
+!.env.example
+*.pem
+*.p12
+*.key
+credentials.json
+**/secrets/

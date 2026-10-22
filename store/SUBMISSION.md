@@ -10,7 +10,7 @@
 ## 2. ZIP作成
 
 ```bash
-cd "/Users/hiranoken/Library/CloudStorage/GoogleDrive-ken.hirano@jamming-group.com/マイドライブ/システム開発/Re-Chrome"
+cd /path/to/Re-Chrome
 
 zip -r ReChromeText-v1.1.0.zip . \
   -x ".git/*" "*.zip" "*.DS_Store" "store/*"
