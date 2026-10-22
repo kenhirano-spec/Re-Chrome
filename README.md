@@ -39,6 +39,8 @@
 zip -r ReChromeText-v1.1.0.zip . -x ".git/*" "*.zip" "*.DS_Store" "store/*"
 ```
 
+生成した ZIP はリポジトリにコミットしない（`.gitignore` で除外）。配布は都度ビルドまたは GitHub Releases を使う。
+
 ## GitHub Pages（プライバシーポリシー）
 
 - URL: `https://kenhirano-spec.github.io/Re-Chrome/privacy.html`
